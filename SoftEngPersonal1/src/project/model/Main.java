@@ -20,5 +20,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		PuzzleApp puzzle = new PuzzleApp();
+		
+		puzzle.setVisible(true);
 	}
 }
