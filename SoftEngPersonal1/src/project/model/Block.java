@@ -9,6 +9,8 @@ import javax.swing.*;
 public class Block extends JPanel {
 	int x;
 	int y;
+	int startx;
+	int starty;
 	int width;
 	int height;
 	boolean selected;
@@ -17,6 +19,8 @@ public class Block extends JPanel {
 	public Block(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
+		this.startx = x;
+		this.starty = y;
 		this.width = width;
 		this.height = height;
 		this.selected = false;
@@ -66,6 +70,14 @@ public class Block extends JPanel {
 		return this.y;
 	}
 	
+	public void movex(int x) {
+		this.x += x;
+	}
+	
+	public void movey(int y) {
+		this.y += y;
+	}
+	
 	public int getWidth() {
 		return this.width;
 	}
@@ -74,39 +86,8 @@ public class Block extends JPanel {
 		return this.height;
 	}
 	
-	public void move(int val) {
-		switch(val) { 
-	       case KeyEvent.VK_UP:
-	           if(this.y - 100 >= 2) {
-	        	   this.y -= 100;
-	           }
-	           break;
-	       case KeyEvent.VK_DOWN:
-	    	   if(this.y + height <= 500) {
-	    		   this.y += 100;
-	    	   }
-	           break;
-	       case KeyEvent.VK_LEFT:
-	    	   if(this.x - 100 >= 0) {
-	        	   this.x -= 100;
-	        	   for(int i = 0; i < points.size(); i++) {
-	        		   Point p = points.get(i);
-	        		   points.set(i, new Point((int) p.getX() - 100, (int) p.getY()));
-	        	   }
-	    	   }
-	           break;
-	       case KeyEvent.VK_RIGHT :
-	    	   if(this.x + width <= 400) {
-	        	   this.x += 100;
-	        	   for(int i = 0; i < points.size(); i++) {
-	        		   Point p = points.get(i);
-	        		   points.set(i, new Point((int) p.getX() + 100, (int) p.getY()));
-	        	   }
-	    	   }
-	           break;
-	     }
+	public void revertBlock() {
+		this.x = startx;
+		this.y = starty;
 	}
-	
-
-	
 }

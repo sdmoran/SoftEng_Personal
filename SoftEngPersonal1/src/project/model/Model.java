@@ -7,34 +7,12 @@ public class Model {
 	
 	ArrayList<Block> blocks;
 	int selected;
+	int totalMoves;
+	boolean isWon;
+	
 	
 	public Model() {
-		this.blocks = new ArrayList<>();
-		/**
-		 * Add tall blocks
-		 */
-		blocks.add(new Block(2, 2, 100, 200));
-		blocks.add(new Block(2, 202, 100, 200));
-		blocks.add(new Block(302, 2, 100, 200));
-		blocks.add(new Block(302, 202, 100, 200));
-		
-        /**
-         * Big square block
-         */
-		blocks.add(new Block(102, 2, 200, 200));
-        
-        /**
-         * Small blocks
-         */
-		blocks.add(new Block(202, 202, 100, 100));
-		blocks.add(new Block(102, 202, 100, 100));
-		blocks.add(new Block(202, 302, 100, 100));
-		blocks.add(new Block(102, 302, 100, 100));
-        
-        /**
-         * Horizontal Block
-         */
-		blocks.add(new Block(102, 402, 200, 100));
+		initializeModel();
 	}
 	
 	/**
@@ -90,29 +68,31 @@ public class Model {
 	 * @param index: The index of the block to be selected
 	 */
 	public void selectBlock(int index) {
-		Block b = blocks.get(selected);
-		b.deSelect();
-		blocks.set(selected, b);
-		
-		
-		b = blocks.get(index);
-		b.select();
-		blocks.set(index, b);
-		
-		selected = index;
+		if(selected >= 0) {
+			Block b = blocks.get(selected);
+			b.deSelect();
+			blocks.set(selected, b);
+		}	
+			
+			Block b = blocks.get(index);
+			b.select();
+			blocks.set(index, b);
+			
+			selected = index;
 	}
 	
 	/**
 	 * deselect
 	 * @return The block that was previously selected
 	 */
-	public Block deselect() {
-		Block b = blocks.get(selected);
-		b.deSelect();
-		blocks.set(selected, b);
-		System.out.println("Deselected!");
-		//selected = -1;
-		return b;	
+	public void deselect() {
+		if(selected > 0) {
+			Block b = blocks.get(selected);
+			b.deSelect();
+			blocks.set(selected, b);
+			System.out.println("Deselected!");
+			selected = -1;
+		}
 	}
 	
 	public Block getSelected() {
@@ -120,6 +100,61 @@ public class Model {
 			return blocks.get(selected);
 		}
 		else
-			return null; 
+			return null;
+	}
+	
+	public void incMoves() {
+		totalMoves++;
+	}
+	
+	public int getMoveNum() {
+		return totalMoves;
+	}
+	
+	public void initializeModel() {
+		this.blocks = new ArrayList<>();
+		this.selected = -1;
+		this.totalMoves = 0;
+		/**
+		 * Add tall blocks
+		 */
+		blocks.add(new Block(2, 2, 100, 200));
+		blocks.add(new Block(2, 202, 100, 200));
+		blocks.add(new Block(102, 102, 100, 200));
+		
+        /**
+         * Big square block
+         */
+		blocks.add(new Block(202, 102, 200, 200));
+        
+        /**
+         * Small blocks
+         */
+		blocks.add(new Block(102, 2, 100, 100));
+		blocks.add(new Block(202, 2, 100, 100));
+		blocks.add(new Block(302, 2, 100, 100));
+		blocks.add(new Block(302, 302, 100, 100));
+        
+        /**
+         * Horizontal Blocks
+         */
+		blocks.add(new Block(102, 302, 200, 100));
+		blocks.add(new Block(202, 402, 200, 100));
+	}
+	
+	public void revertBlocks() {
+		for(Block b : blocks) {
+			b.revertBlock();
+		}
+		this.totalMoves = 0;
+		this.isWon = false;
+	}
+	
+	public boolean isWon() {
+		return isWon;
+	}
+	
+	public void setWon() {
+		this.isWon = true;
 	}
 }

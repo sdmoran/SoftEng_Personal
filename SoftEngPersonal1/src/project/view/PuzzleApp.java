@@ -1,9 +1,6 @@
 package project.view;
 import javax.swing.*;
-import java.awt.Panel;
-import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.Button;
+
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyListener;
@@ -12,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Optional;
 import java.awt.event.ActionEvent;
-import java.awt.Color;
 import java.awt.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
@@ -36,72 +32,124 @@ public class PuzzleApp extends JFrame {
 		getContentPane().add(window, BorderLayout.CENTER);
 		window.setLayout(null);
 		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		puzzle = new PuzzleView(model);
-		puzzle.setBorder(new LineBorder(new Color(0, 0, 0)));
-		puzzle.setBackground(Color.WHITE);
-		puzzle.setBounds(15, 16, 405, 505);
-		puzzle.setLayout(null);
-		puzzle.drawBlocks();
+		
+		giveKeyListener(puzzle);
+		giveMouseListener(puzzle);
 		
 		window.add(puzzle);
 		window.setLocation(200, 100);
+		
+		JButton quitButton = new JButton("Quit (Q)");
+		quitButton.setBounds(92, 599, 115, 29);
+		
+		quitButton.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent e) {
+				  QuitApplicationController q = new QuitApplicationController();
+			  }
+		});
+		
+		window.add(quitButton);
+		
+		JButton resetButton = new JButton("Reset (R)");
+		resetButton.setBounds(222, 599, 115, 29);
+		
+		resetButton.addActionListener(new ActionListener() {
+			  public void actionPerformed(ActionEvent e) {
+				System.out.println("RESET CALLED");
+				puzzle.drawBlocks();
+				ResetPuzzleController r = new ResetPuzzleController(PuzzleApp.this);
+				r.reset();
+				puzzle.requestFocusInWindow();
+			  }
+		});
+		
+		window.add(resetButton);
 		window.setVisible(true);
-		puzzle.setFocusable(true);
-		puzzle.requestFocusInWindow();
 		setTitle("Block Puzzle");
 		setBounds(100, 100, 455, 700);
-        
-        puzzle.addKeyListener(new KeyListener() {
-    			@Override
-    			public void keyPressed(KeyEvent k) {
-    				Block b = model.getSelected();
-    				if(b != null) {
-    					MovePieceController m = new MovePieceController(PuzzleApp.this, model);
-    					m.moveBlock(model.findIndex(b), k, model);
-    					b.setBounds(b.getx(), b.gety(), b.getWidth(), b.getHeight());
-    					puzzle.repaint(b.getx(), b.gety(), b.getWidth(), b.getHeight());
-    					System.out.println(b.getx());
-    				}
-    				else {
-    					System.out.println("No block selected!");
-    				}
-    			}
-    			
-    			@Override
-    			public void keyReleased(KeyEvent k) { }
-    			
-    			@Override
-    			public void keyTyped(KeyEvent k) { }
+	
+	}
+	
+	public void setModel(Model m) {
+		this.model = m;
+	}
+	
+	public Model getModel() {
+		return this.model;
+	}
+	
+	public void handleKeypress(KeyEvent k) {
+		System.out.println(k.getKeyCode());
+		if(k.getKeyCode() == 82) {
+			System.out.println("RESET CALLED");
+			puzzle.drawBlocks();
+			ResetPuzzleController r = new ResetPuzzleController(PuzzleApp.this);
+			r.reset();
+		}
+		
+		if(model.isWon()) {
+			return;
+		}
+		
+		if(k.getKeyCode() == 81) {
+			QuitApplicationController q = new QuitApplicationController();
+		}
+		
+		Block b = model.getSelected();
+		
+		if(b != null) {
+			MovePieceController m = new MovePieceController(PuzzleApp.this, model);
+			m.moveBlock(model.findIndex(b), k, model);
+			b.setBounds(b.getx(), b.gety(), b.getWidth(), b.getHeight());
+			puzzle.repaint(b.getx(), b.gety(), b.getWidth(), b.getHeight()); 
+		}
+		
+		else {
+			System.out.println("No block selected!");
+		}
+	}
+	
+	public void giveKeyListener(PuzzleView p) {
+		p.addKeyListener(new KeyListener() {
+			@Override
+    		public void keyPressed(KeyEvent k) {
+    			handleKeypress(k);
+    		}
+    		@Override
+    		public void keyReleased(KeyEvent k) { }
+    		
+    		@Override
+    		public void keyTyped(KeyEvent k) { }
         });
         System.out.println("Added key listener");
-        
-        
-        puzzle.addMouseListener(new MouseAdapter() {
+	}
+	
+	public void giveMouseListener(PuzzleView puzz) {
+		puzz.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent me) {
-				Block prev = model.getSelected();
+				if(model.isWon()) {
+					return;
+				}
 				Point p = me.getPoint();
 				int found = model.findIndex(p);
 				
 				//if block not found, don't highlight any blocks.
 				if(found < 0) {
-					Block d = model.deselect();
-					puzzle.repaint(d.getx(), d.gety(), d.getWidth(), d.getHeight());
-					return;
+					model.deselect();
+					puzz.redraw();
 				}
 				
-					Block b = model.getBlock(found);
-					//if(!prev.equals(b)) {
-						model.selectBlock(found);
-						puzzle.repaint(b.getx(), b.gety(), b.getWidth(), b.getHeight());
-						puzzle.repaint(prev.getx(), prev.gety(), prev.getWidth(), prev.getHeight());
-					//}
-					System.out.println("Point: " + p.x + ", " + p.y);
-					System.out.println("Block: " + found);
+				else {
+					model.selectBlock(found);
+					puzz.redraw();
+				}
 				
 			}
         });
         System.out.println("Added mouse listener");
-	
 	}
 }
