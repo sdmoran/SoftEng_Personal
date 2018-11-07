@@ -19,8 +19,7 @@ import project.view.*;
 public class Main {
 
 	public static void main(String[] args) {
-		PuzzleApp puzzle = new PuzzleApp();
-		
+		PuzzleApp puzzle = new PuzzleApp();	
 		puzzle.setVisible(true);
 	}
 }

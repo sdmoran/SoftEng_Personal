@@ -12,7 +12,34 @@ public class Model {
 	
 	
 	public Model() {
-		initializeModel();
+		this.blocks = new ArrayList<>();
+		this.selected = -1;
+		this.totalMoves = 0;
+		/**
+		 * Add tall blocks
+		 */
+		blocks.add(new Block(2, 2, 100, 200));
+		blocks.add(new Block(2, 202, 100, 200));
+		blocks.add(new Block(102, 102, 100, 200));
+		
+        /**
+         * Big square block
+         */
+		blocks.add(new Block(202, 102, 200, 200));
+        
+        /**
+         * Small blocks
+         */
+		blocks.add(new Block(102, 2, 100, 100));
+		blocks.add(new Block(202, 2, 100, 100));
+		blocks.add(new Block(302, 2, 100, 100));
+		blocks.add(new Block(302, 302, 100, 100));
+        
+        /**
+         * Horizontal Blocks
+         */
+		blocks.add(new Block(102, 302, 200, 100));
+		blocks.add(new Block(202, 402, 200, 100));
 	}
 	
 	/**
@@ -52,6 +79,11 @@ public class Model {
 		return -1;
 	}
 	
+	/**
+	 * findIndex
+	 * @param p: A Block object representing a block on the game board
+	 * @return The index of the block in the list of blocks, -1 if not found
+	 */
 	public int findIndex(Block b) {
 		int i = 0;
 		for(Block c : blocks) {
@@ -74,11 +106,11 @@ public class Model {
 			blocks.set(selected, b);
 		}	
 			
-			Block b = blocks.get(index);
-			b.select();
-			blocks.set(index, b);
+		Block b = blocks.get(index);
+		b.select();
+		blocks.set(index, b);
 			
-			selected = index;
+		selected = index;
 	}
 	
 	/**
@@ -90,7 +122,6 @@ public class Model {
 			Block b = blocks.get(selected);
 			b.deSelect();
 			blocks.set(selected, b);
-			System.out.println("Deselected!");
 			selected = -1;
 		}
 	}
@@ -109,37 +140,6 @@ public class Model {
 	
 	public int getMoveNum() {
 		return totalMoves;
-	}
-	
-	public void initializeModel() {
-		this.blocks = new ArrayList<>();
-		this.selected = -1;
-		this.totalMoves = 0;
-		/**
-		 * Add tall blocks
-		 */
-		blocks.add(new Block(2, 2, 100, 200));
-		blocks.add(new Block(2, 202, 100, 200));
-		blocks.add(new Block(102, 102, 100, 200));
-		
-        /**
-         * Big square block
-         */
-		blocks.add(new Block(202, 102, 200, 200));
-        
-        /**
-         * Small blocks
-         */
-		blocks.add(new Block(102, 2, 100, 100));
-		blocks.add(new Block(202, 2, 100, 100));
-		blocks.add(new Block(302, 2, 100, 100));
-		blocks.add(new Block(302, 302, 100, 100));
-        
-        /**
-         * Horizontal Blocks
-         */
-		blocks.add(new Block(102, 302, 200, 100));
-		blocks.add(new Block(202, 402, 200, 100));
 	}
 	
 	public void revertBlocks() {

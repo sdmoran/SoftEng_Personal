@@ -58,7 +58,7 @@ public class PuzzleApp extends JFrame {
 		
 		resetButton.addActionListener(new ActionListener() {
 			  public void actionPerformed(ActionEvent e) {
-				System.out.println("RESET CALLED");
+				System.out.println("Reset Puzzle.");
 				puzzle.drawBlocks();
 				ResetPuzzleController r = new ResetPuzzleController(PuzzleApp.this);
 				r.reset();
@@ -82,9 +82,7 @@ public class PuzzleApp extends JFrame {
 	}
 	
 	public void handleKeypress(KeyEvent k) {
-		System.out.println(k.getKeyCode());
 		if(k.getKeyCode() == 82) {
-			System.out.println("RESET CALLED");
 			puzzle.drawBlocks();
 			ResetPuzzleController r = new ResetPuzzleController(PuzzleApp.this);
 			r.reset();
