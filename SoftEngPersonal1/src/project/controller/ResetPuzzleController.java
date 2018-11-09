@@ -11,6 +11,18 @@ public class ResetPuzzleController {
 	}
 	
 	public void reset() {
-		app.getModel().revertBlocks();
+		revertBlocks();
+	}
+	
+	/**
+	 * revertBlocks - ResetPuzzleController?
+	 */
+	public void revertBlocks() {
+		for(Block b : app.getModel().getBlockList()) {
+			b.revertBlock();
+		}
+		app.getModel().resetMoves();
+		app.getModel().setWon(false);
 	}
 }
+ 

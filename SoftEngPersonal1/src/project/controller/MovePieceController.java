@@ -102,7 +102,7 @@ public class MovePieceController {
 			if(b.gety() + b.getHeight() > 500) {
 				if(b.getWidth() == 200 && b.getHeight() == 200 && b.getx() == 102) {
 					System.out.println("You win!!!!!");
-					model.setWon();
+					model.setWon(true);
 					return;
 				}
 				else {

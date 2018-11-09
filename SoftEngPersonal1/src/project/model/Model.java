@@ -46,7 +46,7 @@ public class Model {
 	 * getBlocks
 	 * @return The list of blocks in the model
 	 */
-	public ArrayList<Block> getBlocks() {
+	public ArrayList<Block> getBlockList() {
 		return this.blocks;
 	}
 	
@@ -59,8 +59,14 @@ public class Model {
 		return blocks.get(index);
 	}
 	
+	public void setBlock(int index, Block b) {
+		if(index < this.blocks.size() && index >= 0) {
+			this.blocks.set(index, b);
+		}
+	}
+	
 	/**
-	 * findIndex
+	 * findIndex - MovePieceController?
 	 * @param p: A Point object representing a position on the game board
 	 * @return The index of the block that contains the point, -1 if no block there.
 	 */
@@ -80,7 +86,7 @@ public class Model {
 	}
 	
 	/**
-	 * findIndex
+	 * findIndex - MovePieceController?
 	 * @param p: A Block object representing a block on the game board
 	 * @return The index of the block in the list of blocks, -1 if not found
 	 */
@@ -96,36 +102,23 @@ public class Model {
 	}
 	
 	/**
-	 * selectBlock
-	 * @param index: The index of the block to be selected
+	 * updateSelected - SelectPieceController?
+	 * Updates selected block in list. If no block selected, returns -1.
 	 */
-	public void selectBlock(int index) {
-		if(selected >= 0) {
-			Block b = blocks.get(selected);
-			b.deSelect();
-			blocks.set(selected, b);
-		}	
-			
-		Block b = blocks.get(index);
-		b.select();
-		blocks.set(index, b);
-			
-		selected = index;
+	public void updateSelected() {
+		for(Block c : blocks) {
+			if(c.selected == true) {
+				this.selected = findIndex(c);
+				return;
+			}
+		}
+		this.selected = -1;
 	}
 	
 	/**
-	 * deselect
-	 * @return The block that was previously selected
+	 * getSelected - Here, probably.
+	 * @return
 	 */
-	public void deselect() {
-		if(selected > 0) {
-			Block b = blocks.get(selected);
-			b.deSelect();
-			blocks.set(selected, b);
-			selected = -1;
-		}
-	}
-	
 	public Block getSelected() {
 		if(selected >= 0) {
 			return blocks.get(selected);
@@ -142,19 +135,20 @@ public class Model {
 		return totalMoves;
 	}
 	
-	public void revertBlocks() {
-		for(Block b : blocks) {
-			b.revertBlock();
-		}
-		this.totalMoves = 0;
-		this.isWon = false;
-	}
-	
 	public boolean isWon() {
 		return isWon;
 	}
 	
-	public void setWon() {
-		this.isWon = true;
+	public void setWon(boolean b) {
+		this.isWon = b;
+	}
+	
+	public void resetMoves() {
+		this.totalMoves = 0;
+		this.isWon = false;
+	}
+	
+	public int getSelectedIndex() {
+		return selected;
 	}
 }

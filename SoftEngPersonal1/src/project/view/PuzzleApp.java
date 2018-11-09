@@ -135,14 +135,16 @@ public class PuzzleApp extends JFrame {
 				Point p = me.getPoint();
 				int found = model.findIndex(p);
 				
+				SelectPieceController s = new SelectPieceController(model);
+				
 				//if block not found, don't highlight any blocks.
 				if(found < 0) {
-					model.deselect();
+					s.deselectBlock();
 					puzz.redraw();
 				}
 				
 				else {
-					model.selectBlock(found);
+					s.selectBlock(found);
 					puzz.redraw();
 				}
 				

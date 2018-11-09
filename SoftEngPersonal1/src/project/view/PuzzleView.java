@@ -23,7 +23,7 @@ public class PuzzleView extends JPanel {
 	
 	public void drawBlocks() {
 		if(!model.isWon()) {
-			for(Block b : model.getBlocks()) {
+			for(Block b : model.getBlockList()) {
 				b.setBounds(b.getx(), b.gety(), b.getWidth(), b.getHeight());
 				this.add(b);
 			}
