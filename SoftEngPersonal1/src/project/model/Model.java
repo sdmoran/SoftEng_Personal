@@ -86,7 +86,7 @@ public class Model {
 	}
 	
 	/**
-	 * findIndex - MovePieceController?
+	 * findIndex
 	 * @param p: A Block object representing a block on the game board
 	 * @return The index of the block in the list of blocks, -1 if not found
 	 */
@@ -102,7 +102,7 @@ public class Model {
 	}
 	
 	/**
-	 * updateSelected - SelectPieceController?
+	 * updateSelected
 	 * Updates selected block in list. If no block selected, returns -1.
 	 */
 	public void updateSelected() {
@@ -116,7 +116,7 @@ public class Model {
 	}
 	
 	/**
-	 * getSelected - Here, probably.
+	 * getSelected
 	 * @return
 	 */
 	public Block getSelected() {

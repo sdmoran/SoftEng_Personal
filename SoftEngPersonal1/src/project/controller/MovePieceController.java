@@ -16,16 +16,14 @@ public class MovePieceController {
 		this.model = model;
 	}
 	
-	public void moveBlock(int index, KeyEvent k, Model model) {
+	public boolean moveBlock(int index, int val, Model model) {
 		this.model = model;
-		int val = k.getKeyCode();
 		Block b = model.getBlock(index);
 		ArrayList<Point> points;	
 		
-		//WORKING as far as I can tell.
 		if(val == KeyEvent.VK_UP) {
 			if(b.gety() - 100 < 2) {
-	        	   return;
+				return false;
 	        }
 			//if going up, check top left and right corner.
 			points = new ArrayList<Point>();
@@ -38,19 +36,19 @@ public class MovePieceController {
 			
 			for(Point d : points) {
 				if(!(model.findIndex(d) < 0 || model.findIndex(d) == model.findIndex(b))) { //if space is not empty, can't move: return
-					System.out.println("Collided with block " + model.findIndex(d));
-					return;
+					return false;
 				}
 			}
 			//if we haven't returned, move is valid.
 			b.movey(-100);
 			model.incMoves();
+			return true;
 		}
 		
 		
 		if(val == KeyEvent.VK_RIGHT) {
 			if(b.getx() + b.getWidth() > 400) {
-	        	   return;
+	        	return false;
 	        }
 			
 			//if going right, check top right corner and bottom right corner
@@ -67,17 +65,17 @@ public class MovePieceController {
 			
 			for(Point d : points) {
 				if(!(model.findIndex(d) < 0 || model.findIndex(d) == model.findIndex(b))) { //if space is not empty, can't move: return
-					System.out.println("Collided with block " + model.findIndex(d));
-					return;
+					return false;
 				}
 			}
 			b.movex(100);
 			model.incMoves();
+			return true;
 		}
 		
 		if(val == KeyEvent.VK_LEFT) {
 			if(b.getx() - 100 < 2) {
-	        	   return;
+	        	return false;
 	        }
 			
 			//if going left, check top left corner
@@ -89,12 +87,12 @@ public class MovePieceController {
 			}
 			for(Point d : points) {
 				if(!(model.findIndex(d) < 0 || model.findIndex(d) == model.findIndex(b))) { //if space is not empty, can't move: return
-					System.out.println("Collided with block " + model.findIndex(d));
-					return;
+					return false;
 				}
 			}
 			b.movex(-100);
 			model.incMoves();
+			return true;
 		}
 		
 		//WORKING as far as I can tell.
@@ -103,10 +101,10 @@ public class MovePieceController {
 				if(b.getWidth() == 200 && b.getHeight() == 200 && b.getx() == 102) {
 					System.out.println("You win!!!!!");
 					model.setWon(true);
-					return;
+					return true;
 				}
 				else {
-					return;
+					return false;
 				}
 	        }
 			
@@ -121,12 +119,15 @@ public class MovePieceController {
 
 			for(Point d : points) {
 				if(!(model.findIndex(d) < 0)) { //if space is not empty, can't move: return
-					return;
+					return false;
 				}
 			}
 			//if we haven't returned, move is valid.
 			b.movey(100);
 			model.incMoves();
+			return true;
 		}
+		//Would only ever reach here if input not valid; of course, return false.
+		return false;
 	}
 }

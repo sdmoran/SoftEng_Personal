@@ -42,8 +42,6 @@ public class PuzzleView extends JPanel {
 		}
 		else {
 			drawBlocks();
-			g.drawRect(0, 502, 103, 60);
-			g.drawRect(300, 502, 200, 60);
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 502, 103, 60);
 			g.fillRect(300, 502, 200, 60);

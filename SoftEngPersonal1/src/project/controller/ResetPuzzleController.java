@@ -4,10 +4,10 @@ import project.view.*;
 
 
 public class ResetPuzzleController {
-	PuzzleApp app;
+	Model model;
 	
-	public ResetPuzzleController(PuzzleApp app) {
-		this.app = app;
+	public ResetPuzzleController(Model model) {
+		this.model = model;
 	}
 	
 	public void reset() {
@@ -17,12 +17,12 @@ public class ResetPuzzleController {
 	/**
 	 * revertBlocks - ResetPuzzleController?
 	 */
-	public void revertBlocks() {
-		for(Block b : app.getModel().getBlockList()) {
+	void revertBlocks() {
+		for(Block b : model.getBlockList()) {
 			b.revertBlock();
 		}
-		app.getModel().resetMoves();
-		app.getModel().setWon(false);
+		model.resetMoves();
+		model.setWon(false);
 	}
 }
  
