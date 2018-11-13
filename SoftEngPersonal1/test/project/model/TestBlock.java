@@ -1,6 +1,7 @@
 package project.model;
 
 import junit.framework.TestCase;
+import project.model.Block;
 
 public class TestBlock extends TestCase {
 	public void test() {

@@ -25,8 +25,8 @@ public class PuzzleApp extends JFrame {
 		Model model;
 		MovePieceController moveController;
 		
-	public PuzzleApp() {
-		this.model = new Model();
+	public PuzzleApp(Model model) {
+		this.model = model;
 		
 		window = new JPanel();
 		getContentPane().add(window, BorderLayout.CENTER);
@@ -39,7 +39,7 @@ public class PuzzleApp extends JFrame {
 		puzzle.addKeyListener(new KeyListener() {
 			@Override
     		public void keyPressed(KeyEvent k) {
-    			handleKeypress(k);
+    			handleKeypress(k.getKeyCode());
     		}
     		@Override
     		public void keyReleased(KeyEvent k) { }
@@ -115,32 +115,48 @@ public class PuzzleApp extends JFrame {
 		return this.model;
 	}
 	
-	public void handleKeypress(KeyEvent k) {
-		if(k.getKeyCode() == 82) {
+	/**
+	 * handleKeypress
+	 * returns true if 
+	 * @param key
+	 * @return
+	 */
+	public boolean handleKeypress(int key) {
+		if(key == 82) {
 			puzzle.drawBlocks();
 			ResetPuzzleController r = new ResetPuzzleController(model);
 			r.reset();
+			return true;
 		}
 		
 		if(model.isWon()) {
-			return;
+			return true;
 		}
 		
-		if(k.getKeyCode() == 81) {
+		if(key == 81) {
 			QuitApplicationController q = new QuitApplicationController();
+			return true;
 		}
 		
 		Block b = model.getSelected();
 		
-		if(b != null) {
+		if(b != null ) {
+			if(key >= 37 && key <= 40) {
 			MovePieceController m = new MovePieceController(PuzzleApp.this, model);
-			m.moveBlock(model.findIndex(b), k.getKeyCode(), model);
+			m.moveBlock(model.findIndex(b), key, model);
 			b.setBounds(b.getx(), b.gety(), b.getWidth(), b.getHeight());
 			puzzle.repaint(b.getx(), b.gety(), b.getWidth(), b.getHeight()); 
+			return true;
+			}
+			else {
+				System.out.println("Use the arrow keys to move blocks!");
+				return false;
+			}
 		}
 		
 		else {
 			System.out.println("No block selected!");
+			return false;
 		}
 	}
 }

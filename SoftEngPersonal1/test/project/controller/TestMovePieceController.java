@@ -13,7 +13,7 @@ public class TestMovePieceController extends TestCase {
 
 	public void test() {
 		Model model = new Model();
-		PuzzleApp app = new PuzzleApp();
+		PuzzleApp app = new PuzzleApp(model);
 		MovePieceController m = new MovePieceController(app, model);
 		
 		//Test big block moving, all should fail

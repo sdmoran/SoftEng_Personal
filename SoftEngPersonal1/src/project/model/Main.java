@@ -19,7 +19,8 @@ import project.view.*;
 public class Main {
 
 	public static void main(String[] args) {
-		PuzzleApp puzzle = new PuzzleApp();	
+		Model model = new Model();
+		PuzzleApp puzzle = new PuzzleApp(model);	
 		puzzle.setVisible(true);
 	}
 }
